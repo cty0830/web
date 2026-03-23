@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+    <meta charset = "UTF-8">
+    <title> 台鐵訂票系統 </title>
+    <style> /* CSS */
+        body {
+            background-color: #f4f7f9;
+            font: "Microsoft JhengHei";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px; /* 圓角 */
+            text-align: center;
+            border-top: 10px solid #003366; 
+        }
+
+        .logo { width: 100px; margin-bottom: 20px; }
+
+        /* 火車跑的地方 */
+        .railway-scene {
+            width: 100%;
+            height: 80px;
+            position: relative;/* 火車絕對定位 */
+            margin: 30px 0;
+            background: linear-gradient(to bottom, transparent 60%, #888 60%, #888 65%, transparent 65%); /* 從上到下 0 - 100% ; 0 - 60 % 完全透明 60 - 65 灰色 再來完全透明 */
+            overflow: hidden;
+        }
+
+        .train-sprite {
+            position: absolute;
+            font-size: 45px;
+            bottom: 12px;
+            left: -60px;
+            transform: scaleX(-1);  /* 水平翻轉火車 */
+        }
+
+        .queue-card {
+            background: #eef6ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .number {
+            color: #d9534f;;
+            font-weight: 900; /* 加粗 */
+            font-size: 1.6rem; /* 字體放大 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class = "container">
+        <img src = "train.png" class = "logo">       
+        <h1>車票誤點中，請稍候</h1>
+        <p style = "color: #666;">系統正在為您排隊，請勿關閉視窗。</p>
+
+        <div class = "railway-scene" id = "stage">
+            <div id = "train" class = "train-sprite">🚂</div>
+        </div>
+
+        <div class = "queue-card">
+            <div>前方排隊人數：<span id = "queue-count" class = "number">1250</span> 人</div>
+        </div>
+    </div>
+
+    <script>
+        const train = document.getElementById('train');
+        const stage = document.getElementById('stage');
+        let current = -60;
+        const speed = 2.5;
+
+        driveTrain();
+        function driveTrain() {
+            current += speed;
+            if (current > stage.offsetWidth) {
+                current = -60;
+            }
+            train.style.left = current + 'px';
+            requestAnimationFrame(driveTrain);
+        }
+
+        let count = 1250;
+        setInterval(() => {
+            count -= Math.floor(Math.random() * 3) + 1;
+            if (count < 1) count = 1;
+            document.getElementById('queue-count').innerText = count;
+        }, 2000);
+    </script>
+</body>
+</html>
